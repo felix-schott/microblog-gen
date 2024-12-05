@@ -1,0 +1,22 @@
+name: Run backend test suite
+
+on:
+  pull_request:
+    paths:
+      - "**/*.go"
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+          cache-dependency-path: '**/go.sum'
+      - name: Install dependencies
+        run: |
+          go get ./...
+      - name: Run test suite
+        run: go test ./...
