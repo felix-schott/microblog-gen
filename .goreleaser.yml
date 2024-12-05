@@ -1,0 +1,38 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - main: ./cmd/microblog-gen
+    binary: microblog-gen
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    wrap_in_directory: true
+    files:
+      - README.md
+    format_overrides:
+      - goos: windows
+        format: zip
+
+release:
+  github:
+    owner: felix-schott
+    name: microblog-gen
+  draft: false
+  prerelease: auto
+
+changelog:
+  use: github-native
